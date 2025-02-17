@@ -102,7 +102,7 @@ cidr_block = ""
 
 private_subnets = {
   gb_subnet = {
-    availability_zone = "us-east-1a"
+    availability_zone = ""
     cidr_block        = ""
   }
 }
@@ -114,7 +114,7 @@ private_subnets_additional_tags = {
 
 public_subnets = {
   gb_subnet = {
-    availability_zone = "us-east-1a"
+    availability_zone = ""
     cidr_block        = ""
   }
 }
