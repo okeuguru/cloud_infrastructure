@@ -4,6 +4,24 @@ resource "aws_s3_bucket" "this" {
   force_destroy = true
 }
 
+//resource "aws_s3_bucket_ownership_controls" "this" {
+//  for_each = aws_s3_bucket.this
+//
+//  bucket = aws_s3_bucket.this[each.key].id
+//  rule {
+//    object_ownership = "BucketOwnerPreferred"
+//  }
+//}
+//
+//resource "aws_s3_bucket_acl" "example" {
+//  for_each = aws_s3_bucket.this
+//
+//  depends_on = [aws_s3_bucket_ownership_controls.this]
+//
+//  bucket = aws_s3_bucket.this[each.key].id
+//  acl    = "private"
+//}
+
 resource "aws_s3_bucket_policy" "this" {
   for_each = aws_s3_bucket.this
 
@@ -22,7 +40,12 @@ resource "aws_s3_bucket_policy" "this" {
         Resource = [
           "arn:aws:s3:::${each.value.bucket}",
           "arn:aws:s3:::${each.value.bucket}/*"
-        ]
+        ],
+        Condition: {
+          StringEquals: {
+            "aws:SourceVpc" = var.vpc_id
+          }
+        }
       }
     ]
   })

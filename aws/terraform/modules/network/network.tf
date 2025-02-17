@@ -79,6 +79,22 @@ resource "aws_route_table_association" "private" {
 }
 
 #------------------------------------------------------------------------------
+# S3 endpoint
+#------------------------------------------------------------------------------
+
+resource "aws_vpc_endpoint" "s3" {
+  vpc_id       = aws_vpc.vpc.id
+  service_name = "com.amazonaws.us-east-1.s3"
+}
+# associate route table with VPC endpoint
+resource "aws_vpc_endpoint_route_table_association" "Private_route_table_association" {
+  for_each = aws_route_table.private
+
+  route_table_id  = aws_route_table.private[each.key].id
+  vpc_endpoint_id = aws_vpc_endpoint.s3.id
+}
+
+#------------------------------------------------------------------------------
 # Public Subnets
 #------------------------------------------------------------------------------
 resource "aws_subnet" "public" {
@@ -87,8 +103,8 @@ resource "aws_subnet" "public" {
   availability_zone = each.value.availability_zone
   cidr_block        = each.value.cidr_block
 
-  vpc_id                                         = aws_vpc.vpc.id
-  map_public_ip_on_launch                        = var.map_public_ip_on_launch
+  vpc_id                  = aws_vpc.vpc.id
+  map_public_ip_on_launch = var.map_public_ip_on_launch
   tags = merge(
   var.additional_tags,
   {

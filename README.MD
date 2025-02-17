@@ -137,3 +137,4 @@ Run `terraform output` to retrieve specified outputs
 ## Further enhancements and Notes
 - Analyze IAM policies for tighter scope and least privilege best practice
 - Use KMS encryption instead of the default SSE
+

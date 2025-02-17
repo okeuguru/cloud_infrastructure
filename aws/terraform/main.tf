@@ -27,4 +27,5 @@ module "s3" {
   lambda_function_arn  = module.lambda.lambda_function_arn
   function_name        = module.lambda.lambda_name
   lambda_role_arn      = module.lambda.lambda_exec_role_arn
+  vpc_id               = module.network.vpc_id
 }
